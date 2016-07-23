@@ -1,0 +1,284 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.tomasmoreno.test</groupId>
+  <artifactId>primefaces-test01</artifactId>
+  <version>0.0.1</version>
+
+  <packaging>war</packaging>
+
+  <name>Primefaces-Test01</name>
+  <description>Primeface Tes01</description>
+  
+  <url>http://primefaces.test.tomasmoreno.com</url>
+  
+  <properties>
+    
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <junit.version>3.8.1</junit.version>
+    <jetty.version>9.3.3.v20150827</jetty.version>
+    
+    <maven-compiler.version>2.3.2</maven-compiler.version>
+    <java.version>1.8</java.version>
+    <maven-clean.version>3.0.0</maven-clean.version>
+    
+    <jetty.stop.port>9991</jetty.stop.port>
+    <jetty.port>9090</jetty.port>
+
+    <final.name>primefaces-test01</final.name>
+    
+  </properties>
+  
+  <dependencies>
+    
+    <dependency>
+    
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+      
+    </dependency>
+
+	<!-- Servlet -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
+		<scope>provided</scope>
+	</dependency>
+	
+	<!-- Faces Implementation -->
+	<dependency>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-impl</artifactId>
+		<version>2.2.4</version>
+	</dependency>
+	
+	<!-- Faces Library -->
+	<dependency>
+		<groupId>com.sun.faces</groupId>
+		<artifactId>jsf-api</artifactId>
+		<version>2.2.4</version>
+	</dependency>
+	
+	<!-- Primefaces Version 6 -->
+	<dependency>
+		<groupId>org.primefaces</groupId>
+		<artifactId>primefaces</artifactId>
+		<version>6.0</version>
+	</dependency>
+	
+	<!-- JSP Library -->
+	<dependency>
+		<groupId>javax.servlet.jsp</groupId>
+		<artifactId>javax.servlet.jsp-api</artifactId>
+		<version>2.3.1</version>
+	</dependency>
+	
+	<!-- JSTL Library -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.1.2</version>
+	</dependency>
+
+  </dependencies>  
+  
+  <build>
+
+    <finalName>${final.name}</finalName>
+
+    <plugins>
+
+      <!-- Compile java -->
+      <plugin>
+
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler.version}</version>
+
+        <configuration>
+
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+
+        </configuration>
+
+      </plugin>
+
+      <!-- Maven clean -->
+      <plugin>
+
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>${maven-clean.version}</version>
+
+        <configuration>
+          
+          <filesets>
+          
+            <fileset>
+          
+              <directory>${basedir}/src/main/webapp/WEB-INF/logs-aggregation/</directory>
+          
+              <includes>
+          
+                <include>*</include>
+                <include>*/**</include>
+          
+              </includes>
+          
+              <excludes>
+          
+                <exclude>**/example.log</exclude>
+                <exclude>**/example-important.log</exclude>
+          
+              </excludes>
+          
+              <followSymlinks>false</followSymlinks>
+          
+            </fileset>
+
+            <fileset>
+          
+              <directory>${basedir}/src/main/webapp/WEB-INF/logs/</directory>
+          
+              <includes>
+          
+                <include>*</include>
+                <include>*/**</include>
+          
+              </includes>
+          
+              <excludes>
+          
+                <exclude>**/example.log</exclude>
+                <exclude>**/example-important.log</exclude>
+          
+              </excludes>
+          
+              <followSymlinks>false</followSymlinks>
+          
+            </fileset>
+          
+            <fileset>
+          
+              <directory>${basedir}/src/main/webapp/WEB-INF/temp/</directory>
+          
+              <includes>
+          
+                <include>*</include>
+                <include>*/**</include>
+          
+              </includes>
+          
+              <excludes>
+          
+              </excludes>
+          
+              <followSymlinks>false</followSymlinks>
+          
+            </fileset>
+
+            <fileset>
+          
+              <directory>${basedir}/src/main/webapp/WEB-INF/resources/</directory>
+          
+              <includes>
+          
+                <include>*</include>
+                <include>*/**</include>
+          
+              </includes>
+          
+              <excludes>
+          
+              </excludes>
+          
+              <followSymlinks>false</followSymlinks>
+          
+            </fileset>
+          
+          </filesets>
+
+        </configuration>
+
+      </plugin>
+
+      <!-- Run with Jetty -->
+      <plugin>
+
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>${jetty.version}</version>
+
+        <configuration>
+
+          <scanIntervalSeconds>400</scanIntervalSeconds>
+          <stopKey>stop-please!</stopKey>
+          <stopPort>${jetty.stop.port}</stopPort>
+
+          <systemProperties>
+
+            <systemProperty>
+
+              <name>jetty.port</name>
+              <value>${jetty.port}</value>
+
+            </systemProperty>
+
+          </systemProperties>
+
+          <webAppConfig>
+
+            <contextPath>/${final.name}</contextPath>
+
+          </webAppConfig>
+
+        </configuration>
+
+        <executions>
+
+          <execution>
+
+            <id>start-jetty</id>
+            <phase>pre-integration-test</phase>
+
+            <goals>
+
+              <goal>run</goal>
+
+            </goals>
+
+            <configuration>
+
+              <scanIntervalSeconds>15</scanIntervalSeconds>
+              <daemon>true</daemon>
+
+            </configuration>
+
+          </execution>
+
+          <execution>
+
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+
+            <goals>
+
+              <goal>stop</goal>
+
+            </goals>
+
+          </execution>
+
+        </executions>
+
+      </plugin>
+
+    </plugins>
+
+  </build>
+  
+</project>

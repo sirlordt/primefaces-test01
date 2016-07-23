@@ -1,0 +1,155 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" type="image/png"
+			href="#{request.contextPath}/resources/main/images/favicon.png" />
+	</f:facet>
+
+	<title>PrimeFaces ShowCase</title>
+	<h:outputStylesheet name="main/css/showcase.css" />
+	<h:outputStylesheet name="main/css/perfect-scrollbar.css" />
+	<h:outputStylesheet name="main/css/sh.css" />
+	<h:outputScript name="jquery/jquery.js" library="primefaces" />
+	<h:outputScript name="jquery/jquery-plugins.js" library="primefaces" />
+	<h:outputScript name="main/js/perfect-scrollbar.js" />
+	<h:outputScript name="main/js/showcase.js" />
+	<ui:insert name="head" />
+	<!-- 
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+  		_gaq.push(['_setAccount', 'UA-12200033-1']);
+  		_gaq.push(['_trackPageview']);
+  		(function() {
+   			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  		})();
+	</script>
+	 -->
+</h:head>
+
+<h:body>
+
+   
+	<h:form>
+		<p:growl id="growl" />
+
+		<h3 style="margin-top: 0">Basic</h3>
+		<p:panel id="pnl" header="New User" style="margin-bottom:10px;">
+			<p:messages id="messages" />
+			<h:panelGrid columns="3" cellpadding="5">
+				<h:outputLabel for="firstname" value="Firstname: *" />
+				<p:inputText id="firstname" value="#{blockUIView.firstname}"
+					required="true" label="Firstname">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<p:message for="firstname" />
+
+				<h:outputLabel for="lastname" value="Lastname: *" />
+				<p:inputText id="lastname" value="#{blockUIView.lastname}"
+					required="true" label="Lastname" />
+				<p:message for="lastname" />
+			</h:panelGrid>
+
+			<p:commandButton id="saveBtn" widgetVar="saveBtn" value="Save" icon="ui-icon-check"
+				style="margin:0" actionListener="#{blockUIView.save}" update="growl" />
+		</p:panel>
+
+		<p:blockUI block="pnl" trigger="saveBtn" />
+
+		<h3>Custom Content</h3>
+		<p:dataTable id="dataTable" var="car" value="#{blockUIView.cars}"
+			paginator="true" rows="5">
+			<f:facet name="header">
+            Cars
+        </f:facet>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Id" />
+				</f:facet>
+				<h:outputText value="#{car.id}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Year" />
+				</f:facet>
+				<h:outputText value="#{car.year}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Brand" />
+				</f:facet>
+				<h:outputText value="#{car.brand}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Color" />
+				</f:facet>
+				<h:outputText value="#{car.color}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:blockUI block="dataTable" trigger="dataTable">
+        LOADING<br />
+			<p:graphicImage name="demo/images/ajaxloadingbar.gif" />
+		</p:blockUI>
+
+		<h3>Client Side API</h3>
+		<p:accordionPanel id="accordion" multiple="true"
+			style="margin-bottom:20px;">
+			<p:tab title="Godfather Part I">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:graphicImage name="demo/images/godfather/godfather1.jpg" />
+					<h:outputText value="The story begins as Don Vito Corleone..." />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Godfather Part II">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:graphicImage name="demo/images/godfather/godfather2.jpg" />
+					<h:outputText
+						value="Francis Ford Coppola's legendary continuation..." />
+				</h:panelGrid>
+			</p:tab>
+			<p:tab title="Godfather Part III">
+				<h:panelGrid columns="2" cellpadding="10">
+					<p:graphicImage name="demo/images/godfather/godfather3.jpg" />
+					<h:outputText value="After a break of more than 15 years..." />
+				</h:panelGrid>
+			</p:tab>
+		</p:accordionPanel>
+
+		<p:commandButton id="pnlBtn" widgetVar="testbtn01" type="button"
+			onclick="PF('testbtn02').hide();" update=":display" />
+		<p:commandButton id="pnlBtn2" widgetVar="testbtn02" type="button"
+			onclick="PF('testbtn01').hide();" update=":display"/>
+
+		<p:blockUI block="accordion" widgetVar="bui" />
+	</h:form>
+		
+        <p:panel id="button_panel" widgetVar="testPanel" closable="true" toggleable="true">
+           <h1>Testing</h1>
+        </p:panel>
+
+        <p:commandButton onclick="PF('testbtn01').show()" value="Show Panel" type="button"/>
+
+        <p:commandButton onclick="PF('testbtn01').close();" value="Hide Panel" type="button"/>		
+
+
+</h:body>
+
+</html>
